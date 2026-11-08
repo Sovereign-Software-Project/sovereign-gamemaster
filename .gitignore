@@ -5,8 +5,10 @@ bin/
 out/
 .gradletasknamecache
 
-# VS Code
+# IDEs
+.idea/
 .vscode/
+*.iml
 *.code-workspace
 
 # Operating System Files
