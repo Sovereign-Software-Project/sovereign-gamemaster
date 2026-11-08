@@ -1,0 +1,17 @@
+# Gradle & Build Output
+.gradle/
+build/
+bin/
+out/
+.gradletasknamecache
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Operating System Files
+# Linux
+*~
+.DS_Store
+Thumbs.db
+.directory
