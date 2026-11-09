@@ -17,8 +17,15 @@ repositories {
 dependencies {
     // Standard Kotlin library dependencies
     implementation(kotlin("stdlib"))
-
     implementation(compose.desktop.currentOs)
+    // JUnit 5 Testing Dependencies
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    // Required by Gradle to launch JUnit Platform tests
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 kotlin {
