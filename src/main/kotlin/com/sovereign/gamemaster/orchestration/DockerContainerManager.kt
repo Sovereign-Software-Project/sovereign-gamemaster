@@ -29,16 +29,24 @@ class DockerContainerManager(private val executor: ProcessExecutor) {
         return executor.executeCommand("stop", containerName)
     }
 
+    // pause container
     fun pauseContainer(containerName: String): DockerExecutionResult {
         return executor.executeCommand("pause", containerName)
     }
 
+    // unpause container
     fun unpauseContainer(containerName: String): DockerExecutionResult {
         return executor.executeCommand("unpause", containerName)
     }
 
+    // delete container
     fun deleteContainer(containerName: String): DockerExecutionResult {
         return executor.executeCommand("rm", containerName)
+    }
+
+    fun restartContainer(containerName: String): DockerExecutionResult {
+        return executor.executeCommand("restart", containerName)
+
     }
 
 }

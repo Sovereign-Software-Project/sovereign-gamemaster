@@ -57,12 +57,14 @@ class DockerContainerManagerTest {
         manager.pauseContainer("my-server")
         manager.unpauseContainer("my-server")
         manager.deleteContainer("my-server")
+        manager.restartContainer("my-server")
 
         val expectedCommands = listOf(
             listOf("stop", "my-server"),
             listOf("pause", "my-server"),
             listOf("unpause", "my-server"),
-            listOf("rm", "my-server")
+            listOf("rm", "my-server"),
+            listOf("restart", "my-server")
         )
 
         assertEquals(expectedCommands, fakeExecutor.executedCommands)

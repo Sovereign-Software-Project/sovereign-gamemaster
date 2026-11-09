@@ -34,8 +34,8 @@ class DockerProcessExecutor : ProcessExecutor {
         val process = processBuilder.start()
 
         // read everything the process printed out as a string
-        val output = process.inputStream.bufferedReader().use { reader ->
-            reader.readText()
+        val output = process.inputStream.use { inputStream ->
+            inputStream.bufferedReader().readText()
         }
 
         // wait for the process to exit and grab exit code
