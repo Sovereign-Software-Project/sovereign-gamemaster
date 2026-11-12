@@ -19,6 +19,10 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
+
+    // Coroutines & StateFlow support
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.1")
     
     // JUnit 5 Testing Dependencies
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")

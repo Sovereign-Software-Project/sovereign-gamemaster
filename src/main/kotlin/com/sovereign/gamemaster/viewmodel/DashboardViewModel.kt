@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.sovereign.gamemaster.ui.screens.dashboard.DashboardUiState
+import com.sovereign.gamemaster.orchestration.DockerMonitorManager
 
 /**
  * ViewModel (State & Control Layer) for the Dashboard.
@@ -14,7 +15,9 @@ import com.sovereign.gamemaster.ui.screens.dashboard.DashboardUiState
  * - Translates backend/Docker execution results into UI-ready state.
  */
 
-class DashboardViewModel {
+class DashboardViewModel(
+    private val monitorManager: DockerMonitorManager
+) {
     var uiState by mutableStateOf(DashboardUiState())
         private set
 
@@ -24,6 +27,29 @@ class DashboardViewModel {
 
     fun onRestartClick() {
         // TODO: Implement restart logic later
+    }
+
+    // Called when the active server changes from Main/SovereignApp
+    fun loadLogs(containerName: String) {
+        // If your DashboardUiState also updates selectedServer elsewhere, 
+        // fetchLogs will use it directly.
+        fetchLogs(containerName)
+    }
+
+    private fun fetchLogs(containerName: String) {
+        val result = monitorManager.getContainerLogs(containerName, tailLines = 150)
+        uiState = if (result.code == 0) {
+            uiState.copy(logs = result.outputString)
+        } else {
+            uiState.copy(logs = "Error loading logs:\n${result.outputString}")
+        }
+    }
+
+    // Refreshes logs using the currently selected server's ID/name
+    fun onRefreshLogsClick() {
+        uiState.selectedServer?.id?.let { containerName ->
+            fetchLogs(containerName)
+        }
     }
 
     fun onClearLogsClick() {

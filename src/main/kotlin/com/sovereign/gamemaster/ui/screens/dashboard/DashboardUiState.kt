@@ -5,14 +5,15 @@ import com.sovereign.gamemaster.model.ContainerState
 
 data class DashboardUiState(
 
-    val containerState: ContainerState = ContainerState.UNKNOWN,
+    // selected server
+    val selectedServer: ServerSummary? = null,
 
-    // Embed shared server model
-    val server: ServerSummary = ServerSummary(),
+    // container state ie. up/down/unkown
+    val containerState: ContainerState = ContainerState.UNKNOWN,
     
-    // Dashboard-specific details (not needed on the home screen card)
+    // Dashboard-specific details
     val ipAddress: String = "IP ADDRESS",
-    val logs: String = "[INFO] PLACEHOLDER LOG READING\n[INFO] PLACEHOLDER"
+    val logs: String = ""
 
     //TODO: add metrics stuff here later
 )

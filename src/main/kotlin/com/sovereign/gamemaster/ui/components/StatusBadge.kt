@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.sovereign.gamemaster.model.ContainerState
 import com.sovereign.gamemaster.ui.theme.SovereignThemeConfig
 
 @Composable
@@ -21,14 +22,13 @@ fun StatusBadge(
 ) {
     Box(
         modifier = modifier
-            // Subtle tinted background (using 15% opacity of the badge color for a clean UI look)
             .background(
                 color = badgeColor.copy(alpha = 0.15f),
-                shape = RoundedCornerShape(50.dp) // Fully rounded pill shape
+                shape = RoundedCornerShape(50.dp)
             )
             .border(
                 width = 1.dp,
-                color = badgeColor.copy(alpha = 0.4f), // Matching subtle border
+                color = badgeColor.copy(alpha = 0.4f),
                 shape = RoundedCornerShape(50.dp)
             )
             .padding(horizontal = 10.dp, vertical = 4.dp)
@@ -40,4 +40,26 @@ fun StatusBadge(
             fontSize = theme.fontSizeSmall
         )
     }
+}
+
+@Composable
+fun ContainerStatusBadge(
+    state: ContainerState,
+    theme: SovereignThemeConfig,
+    modifier: Modifier = Modifier
+) {
+    val (label, color) = when (state) {
+        ContainerState.ONLINE -> "Online" to theme.successColor
+        ContainerState.OFFLINE -> "Offline" to theme.dangerColor
+        ContainerState.STARTING -> "Starting" to theme.warningColor
+        ContainerState.STOPPING -> "Stopping" to theme.warningColor
+        ContainerState.UNKNOWN -> "Unknown" to Color.Gray
+    }
+
+    StatusBadge(
+        text = label,
+        badgeColor = color,
+        theme = theme,
+        modifier = modifier
+    )
 }
