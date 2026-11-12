@@ -1,4 +1,4 @@
-package com.sovereign.gamemaster.ui.screens
+package com.sovereign.gamemaster.ui.screens.dashboard
 
 
 
