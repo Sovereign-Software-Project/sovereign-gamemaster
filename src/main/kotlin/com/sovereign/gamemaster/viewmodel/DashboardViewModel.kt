@@ -3,8 +3,8 @@ package com.sovereign.gamemaster.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.sovereign.gamemaster.ui.screens.dashboard.DashboardUiState
 import com.sovereign.gamemaster.orchestration.DockerMonitorManager
+import com.sovereign.gamemaster.ui.screens.dashboard.DashboardUiState
 
 /**
  * ViewModel (State & Control Layer) for the Dashboard.

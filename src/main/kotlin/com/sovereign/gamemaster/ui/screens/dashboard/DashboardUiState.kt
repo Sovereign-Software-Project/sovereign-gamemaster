@@ -1,7 +1,7 @@
 package com.sovereign.gamemaster.ui.screens.dashboard
 
-import com.sovereign.gamemaster.model.ServerSummary
 import com.sovereign.gamemaster.model.ContainerState
+import com.sovereign.gamemaster.model.ServerSummary
 
 data class DashboardUiState(
 
