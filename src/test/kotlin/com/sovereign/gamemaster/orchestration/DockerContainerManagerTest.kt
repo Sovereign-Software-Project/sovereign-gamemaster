@@ -10,10 +10,16 @@ class DockerContainerManagerTest {
         private val mockResult: DockerExecutionResult = DockerExecutionResult(0, "mock_container_id")
     ) : ProcessExecutor {
         val executedCommands = mutableListOf<List<String>>()
+        val streamedCommands = mutableListOf<List<String>>()
 
         override fun executeCommand(vararg command: String): DockerExecutionResult {
             executedCommands.add(command.toList())
             return mockResult
+        }
+
+        override suspend fun streamCommand(command: List<String>, onNewLine: (String) -> Unit) {
+            streamedCommands.add(command)
+            onNewLine(mockResult.outputString)
         }
     }
 

@@ -1,5 +1,10 @@
 package com.sovereign.gamemaster.orchestration
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
 /**
  * DockerProcessExecutor.kt
  *
@@ -12,35 +17,57 @@ package com.sovereign.gamemaster.orchestration
 
 interface ProcessExecutor {
     fun executeCommand(vararg command: String): DockerExecutionResult
+        suspend fun streamCommand(command: List<String>, onNewLine: (String) -> Unit)
 }
-class DockerProcessExecutor : ProcessExecutor {
-    override fun executeCommand(vararg command: String): DockerExecutionResult {
 
+class DockerProcessExecutor : ProcessExecutor {
+    override fun executeCommand(vararg command: String): DockerExecutionResult 
+    {
         // prepend "docker" to the command and take the command to this variable
         val fullCommand = listOf("docker", *command)
-
-        // Basic development logging
         println("[EXEC] Executing: ${fullCommand.joinToString(" ")}")
 
-        // configure processBuilder
         val processBuilder = ProcessBuilder(fullCommand).apply {
-
-            // combine stdout and stderr into single stream
-            // thus normal logs and error messages are captured together
             redirectErrorStream(true)
         }
 
-        // start process on host machine
         val process = processBuilder.start()
-
-        // read everything the process printed out as a string
         val output = process.inputStream.use { inputStream ->
             inputStream.bufferedReader().readText()
         }
-
-        // wait for the process to exit and grab exit code
         val exitCode = process.waitFor()
 
         return DockerExecutionResult(code = exitCode, outputString = output)
+    }
+
+    override suspend fun streamCommand(command: List<String>, onNewLine: (String) -> Unit) {
+
+       withContext(Dispatchers.IO) {
+            try {
+                val fullCommand = listOf("docker") + command
+                println("[EXEC STREAM] Starting: ${fullCommand.joinToString(" ")}")
+
+                val processBuilder = ProcessBuilder(fullCommand).apply {
+                    redirectErrorStream(true) // merges stdout & stderr
+                }
+
+                val process = processBuilder.start()
+
+                // wrap process input stream in a bufferedReader for line by line reading
+                val reader = BufferedReader(InputStreamReader(process.inputStream))
+
+                // read lines iteratively as produced
+                var line: String? = reader.readLine()
+                while (line != null) {
+                    onNewLine(line) // pass to UI/caller
+                    line = reader.readLine()
+                }
+
+                process.waitFor()
+                onNewLine("[Process exited with code ${process.exitValue()}]")
+            } catch (e: Exception) {
+                onNewLine("[Error streaming process: ${e.localizedMessage}]")
+            }
+        }
     }
 }
