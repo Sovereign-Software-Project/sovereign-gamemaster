@@ -1,11 +1,11 @@
 package com.sovereign.gamemaster.ui.components
 
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.shape.RoundedCornerShape
 import com.sovereign.gamemaster.ui.theme.SovereignThemeConfig
 
 enum class ButtonIntent {
@@ -17,13 +17,14 @@ enum class ButtonIntent {
 
 @Composable
 fun CustomButton(
-    text: String, // String param for button label
-    onClick: () -> Unit, // action callback
-    theme: SovereignThemeConfig, // inject theme object
+    text: String,
+    onClick: () -> Unit,
+    theme: SovereignThemeConfig,
     intent: ButtonIntent = ButtonIntent.NEUTRAL,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = when (intent) {
+    val containerColor = when (intent) {
         ButtonIntent.NEUTRAL -> theme.surface
         ButtonIntent.SUCCESS -> theme.successColor
         ButtonIntent.DANGER -> theme.dangerColor
@@ -34,13 +35,19 @@ fun CustomButton(
 
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = textColor,
+            disabledContainerColor = theme.disabledSurface,
+            disabledContentColor = theme.disabledText
+        ),
         shape = RoundedCornerShape(theme.cornerRadius),
         modifier = modifier
     ) {
         Text(
             text = text,
-            color = textColor,
-            fontFamily = theme.fontPrimary)
+            fontFamily = theme.fontPrimary
+        )
     }
 }

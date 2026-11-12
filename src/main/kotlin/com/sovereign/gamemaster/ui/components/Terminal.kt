@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.sovereign.gamemaster.ui.theme.SovereignThemeConfig
 
 @Composable
@@ -22,12 +21,17 @@ fun TerminalCard(
 ) {
     val scrollState = rememberScrollState()
 
+    // Auto scroll to the latest log line whenever logs update
+    LaunchedEffect(logs) {
+        scrollState.animateScrollTo(scrollState.maxValue)
+    }
+
     // wrap in a styled surface using theme config
     Box(
         modifier = modifier
-        .background(theme.surface, shape = RoundedCornerShape(theme.cornerRadius))
-        .border(theme.borderWidth, theme.borderColor, shape = RoundedCornerShape(theme.cornerRadius))
-        .padding(12.dp)
+            .background(theme.surface, shape = RoundedCornerShape(theme.cornerRadius))
+            .border(theme.borderWidth, theme.borderColor, shape = RoundedCornerShape(theme.cornerRadius))
+            .padding(12.dp)
     ) {
         Column(
             modifier = Modifier
@@ -35,7 +39,7 @@ fun TerminalCard(
                 .verticalScroll(scrollState)
         ) {
             Text(
-                text = logs.ifEmpty{"Waiting for container output..."},
+                text = logs.ifEmpty{""},
                 color = theme.textMain,
                 fontFamily = theme.fontTerminal,
                 fontSize = theme.fontSizeSmall

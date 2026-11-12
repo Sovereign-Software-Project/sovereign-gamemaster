@@ -1,5 +1,7 @@
 package com.sovereign.gamemaster.config
 
+import com.sovereign.gamemaster.model.ContainerConfig
+
 object ServerPresets {
     val defaultPresets = listOf(
         

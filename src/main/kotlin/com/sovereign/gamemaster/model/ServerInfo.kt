@@ -7,7 +7,7 @@ enum class ContainerState(
     val isSecondaryActionEnabled: Boolean,
     val isActive: Boolean
 ) {
-    UNKNOWN("Unavailable", "Refresh Status", true, false, false),
+    UNKNOWN("Unavailable", "Unavailable", true, false, false),
     OFFLINE("OFFLINE", "Start Server", true, false, isActive = false),
     STARTING("STARTING...", "Starting...", false, false, isActive = true),
     ONLINE("ONLINE", "Stop Server", true, true, isActive = true),

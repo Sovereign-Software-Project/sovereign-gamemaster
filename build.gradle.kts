@@ -18,6 +18,8 @@ dependencies {
     // Standard Kotlin library dependencies
     implementation(kotlin("stdlib"))
     implementation(compose.desktop.currentOs)
+    implementation(compose.material3)
+    
     // JUnit 5 Testing Dependencies
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     // Required by Gradle to launch JUnit Platform tests

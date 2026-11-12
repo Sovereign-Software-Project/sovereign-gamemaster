@@ -1,17 +1,21 @@
 package com.sovereign.gamemaster
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.sovereign.gamemaster.ui.screens.dashboard.DashboardScreen
+import com.sovereign.gamemaster.viewmodel.DashboardViewModel
 
 fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "Sovereign GameMaster"
-    ) {
-        // DashboardScreen()
+    val viewModel = remember { DashboardViewModel() }
+
+    Window(onCloseRequest = ::exitApplication, title = "Sovereign GameMaster") {
+        DashboardScreen(
+            containerState = viewModel.uiState.containerState,
+            logOutput = viewModel.uiState.logs,
+            onPrimaryActionClick = viewModel::onPrimaryActionClick,
+            onRestartClick = viewModel::onRestartClick,
+            onClearLogsClick = viewModel::onClearLogsClick
+        )
     }
 }

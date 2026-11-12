@@ -40,17 +40,19 @@ data class SovereignThemeConfig(
     val textError: Color = Color.Transparent,
     val textCode: Color = Color.Transparent,
     val textAccent: Color = Color.Transparent,
-    val textCustomColor1: Color = Color.Transparent,
-    val textCustomColor2: Color = Color.Transparent,
-    val textCustomColor3: Color = Color.Transparent,
-    val textCustomColor4: Color = Color.Transparent,
-    val textCustomColor5: Color = Color.Transparent,
 
     // Font Sizes
     val fontSizeSmall: TextUnit = 12.sp,
     val fontSizeMedium: TextUnit = 14.sp,
     val fontSizeLarge: TextUnit = 18.sp
 ) {
+
+    val disabledSurface: Color
+        get() = surface.copy(alpha = 0.6f)
+
+    val disabledText: Color
+        get() = textMain.copy(alpha = 0.6f)
+
     companion object {
         fun fromPreset(preset: ThemePreset): SovereignThemeConfig {
             return when (preset) {
@@ -58,31 +60,41 @@ data class SovereignThemeConfig(
                     background = Color(0xFF121417),
                     surface = Color(0xFF1A1D24),
                     primary = Color(0xFF3B82F6),
+
                     textMain = Color(0xFFE2E8F0),
                     textMuted = Color(0xFF94A3B8),
+                    
+                    fontPrimary = FontFamily.SansSerif,
+                    fontTerminal = FontFamily.Monospace,
+                    
                     borderColor = Color(0xFF2E3846),
+                    borderWidth = 1.dp,
+                    cornerRadius = 6.dp,
+                    
                     successColor = Color(0xFF10B981), // Muted green
                     dangerColor = Color(0xFFEF4444),  // Muted red
-                    warningColor = Color(0xFFF59E0B), // Muted amber
-                    cornerRadius = 6.dp,
-                    borderWidth = 1.dp,
-                    fontPrimary = FontFamily.SansSerif,
-                    fontTerminal = FontFamily.Monospace
+                    warningColor = Color(0xFFF59E0B) // Muted amber
+
                 )
                 ThemePreset.SUBTLE_NEON -> SovereignThemeConfig(
                     background = Color(0xFF0D0F12),
                     surface = Color(0xFF14181F),
                     primary = Color(0xFF00FF9D),    // Neon mint primary
+                    
                     textMain = Color(0xFFF1F5F9),
                     textMuted = Color(0xFF64748B),
+                    
+                    fontPrimary = FontFamily.Monospace,
+                    fontTerminal = FontFamily.Monospace,
+                    
                     borderColor = Color(0xFF1E293B),
+                    borderWidth = 1.dp,
+                    cornerRadius = 2.dp,
+                    
                     successColor = Color(0xFF00FF9D), // Neon mint for success
                     dangerColor = Color(0xFFFF3366),  // Sharp neon magenta/red for danger
-                    warningColor = Color(0xFFFFD300), // Electric yellow for warning
-                    cornerRadius = 2.dp,
-                    borderWidth = 1.dp,
-                    fontPrimary = FontFamily.Monospace,
-                    fontTerminal = FontFamily.Monospace
+                    warningColor = Color(0xFFFFD300) // Electric yellow for warning
+ 
                 )
             }
         }
