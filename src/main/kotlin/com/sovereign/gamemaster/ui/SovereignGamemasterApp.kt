@@ -1,6 +1,6 @@
 package com.sovereign.gamemaster.ui
 
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -10,40 +10,35 @@ import com.sovereign.gamemaster.core.ServerRegistry
 import com.sovereign.gamemaster.orchestration.DockerMonitorManager
 import com.sovereign.gamemaster.orchestration.DockerProcessExecutor
 import com.sovereign.gamemaster.ui.screens.dashboard.DashboardScreen
+import com.sovereign.gamemaster.orchestration.DockerContainerManager
+import com.sovereign.gamemaster.core.ContainerLogManager
 import com.sovereign.gamemaster.viewmodel.DashboardViewModel
 
-@androidx.compose.runtime.Composable
+@Composable
 fun ApplicationScope.SovereignGamemasterApp() {
     val processExecutor = remember { DockerProcessExecutor() }
     val monitorManager = remember { DockerMonitorManager(processExecutor) }
+    val containerManager = remember { DockerContainerManager(processExecutor) }
+    val logManager = remember { ContainerLogManager(monitorManager) }
+
+    // ServerRegistry automatically starts its own global background polling on init
     val serverRegistry = remember { ServerRegistry(monitorManager) }
-    val viewModel = remember { DashboardViewModel(monitorManager) }
 
-    val activeServer by serverRegistry.activeServer.collectAsState()
-
-    LaunchedEffect(Unit) {
-        serverRegistry.refreshServers()
-        if (serverRegistry.selectedServerId.value == null) {
-            serverRegistry.servers.value.firstOrNull()?.let { firstServer ->
-                serverRegistry.selectServer(firstServer.id)
-            }
-        }
+    // DashboardViewModel automatically observes the registry and polls its own logs
+    val viewModel = remember {
+        DashboardViewModel(
+            containerManager = containerManager,
+            logManager = logManager,
+            serverRegistry = serverRegistry
+        )
     }
 
-    // Automatically load logs when active server changes, and poll every 3 seconds
-    LaunchedEffect(activeServer?.id) {
-        activeServer?.id?.let { containerName ->
-            viewModel.loadLogs(containerName)
-            while(true) {
-                kotlinx.coroutines.delay(3000) // Poll every 3 seconds
-                viewModel.loadLogs(containerName)
-            }
-        }
-    }
+    // Collect the rich runtime model from the registry (via activeRuntimeServer)
+    val activeRuntimeServer by serverRegistry.activeRuntimeServer.collectAsState()
 
     Window(onCloseRequest = ::exitApplication, title = "Sovereign GameMaster") {
         DashboardScreen(
-            activeServer = activeServer,
+            activeServer = activeRuntimeServer,
             logOutput = viewModel.uiState.logs,
             onPrimaryActionClick = viewModel::onPrimaryActionClick,
             onRestartClick = viewModel::onRestartClick,

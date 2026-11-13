@@ -24,6 +24,11 @@ class DockerContainerManager(private val executor: ProcessExecutor) {
         )
     }
 
+    // Start an already created (stopped) container
+    fun startExistingContainer(containerName: String): DockerExecutionResult {
+        return executor.executeCommand("start", containerName)
+    }
+
     // Stop container
     fun stopContainer(containerName: String): DockerExecutionResult {
         return executor.executeCommand("stop", containerName)

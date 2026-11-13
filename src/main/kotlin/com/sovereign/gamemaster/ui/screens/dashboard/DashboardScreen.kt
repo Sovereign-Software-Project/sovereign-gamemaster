@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sovereign.gamemaster.model.ServerSummary
+import com.sovereign.gamemaster.model.ServerRuntimeUiModel
 import com.sovereign.gamemaster.ui.components.TerminalCard
 import com.sovereign.gamemaster.ui.composites.ServerActionBar
 import com.sovereign.gamemaster.ui.composites.ServerHeader
@@ -17,7 +17,7 @@ import com.sovereign.gamemaster.ui.theme.ThemePreset
 
 @Composable
 fun DashboardScreen(
-    activeServer: ServerSummary?,
+    activeServer: ServerRuntimeUiModel?,
     logOutput: String,
     onPrimaryActionClick: () -> Unit,
     onRestartClick: () -> Unit,
@@ -56,7 +56,7 @@ fun DashboardScreen(
         )
 
         ServerActionBar(
-            containerState = activeServer.status,
+            containerState = activeServer.containerState,
             theme = currentTheme,
             onPrimaryAction = onPrimaryActionClick,
             onRestart = onRestartClick,

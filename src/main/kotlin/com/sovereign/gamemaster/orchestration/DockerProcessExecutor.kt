@@ -25,7 +25,6 @@ class DockerProcessExecutor : ProcessExecutor {
     {
         // prepend "docker" to the command and take the command to this variable
         val fullCommand = listOf("docker", *command)
-        println("[EXEC] Executing: ${fullCommand.joinToString(" ")}")
 
         val processBuilder = ProcessBuilder(fullCommand).apply {
             redirectErrorStream(true)

@@ -13,13 +13,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sovereign.gamemaster.model.ServerSummary
+import com.sovereign.gamemaster.model.ServerRuntimeUiModel
 import com.sovereign.gamemaster.ui.components.ContainerStatusBadge
 import com.sovereign.gamemaster.ui.theme.SovereignThemeConfig
 
 @Composable
 fun ServerHeader(
-    server: ServerSummary,
+    server: ServerRuntimeUiModel,
     theme: SovereignThemeConfig,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
@@ -62,7 +62,7 @@ fun ServerHeader(
                 )
 
                 ContainerStatusBadge(
-                    state = server.status,
+                    state = server.containerState,
                     theme = theme
                 )
             }
