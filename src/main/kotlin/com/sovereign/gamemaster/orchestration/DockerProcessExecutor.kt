@@ -17,7 +17,7 @@ import java.io.InputStreamReader
 
 interface ProcessExecutor {
     fun executeCommand(vararg command: String): DockerExecutionResult
-        suspend fun streamCommand(command: List<String>, onNewLine: (String) -> Unit)
+    suspend fun streamCommand(command: List<String>, onNewLine: (String) -> Unit)
 }
 
 class DockerProcessExecutor : ProcessExecutor {
@@ -40,8 +40,7 @@ class DockerProcessExecutor : ProcessExecutor {
     }
 
     override suspend fun streamCommand(command: List<String>, onNewLine: (String) -> Unit) {
-
-       withContext(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             try {
                 val fullCommand = listOf("docker") + command
                 println("[EXEC STREAM] Starting: ${fullCommand.joinToString(" ")}")

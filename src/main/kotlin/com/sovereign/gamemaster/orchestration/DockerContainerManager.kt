@@ -1,5 +1,7 @@
 package com.sovereign.gamemaster.orchestration
 
+import com.sovereign.gamemaster.model.ContainerConfig
+
 /**
  * DockerContainerManager.kt
  *

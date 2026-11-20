@@ -1,15 +1,11 @@
 package com.sovereign.gamemaster.orchestration
 
 import com.sovereign.gamemaster.model.ContainerState
-import java.lang.invoke.StringConcatFactory
 
 /**
  * RESPONSIBILITY: Handles container diagnostics, resource monitoring, and log streaming.
  */
-
- class DockerMonitorManager(private val executor: ProcessExecutor) {
-    // Docker Executor
-    private val processExecutor: ProcessExecutor = DockerProcessExecutor()
+class DockerMonitorManager(private val executor: ProcessExecutor) {
 
     // Fetch resource usage snapshot
     fun getContainerStats(containerName: String): DockerExecutionResult {
@@ -38,7 +34,7 @@ import java.lang.invoke.StringConcatFactory
         args.add(containerName)
 
         // Use executeCommand, and pass varargs using the spread operator (*)
-        return processExecutor.executeCommand(*args.toTypedArray())
+        return executor.executeCommand(*args.toTypedArray())
     }
 
     // get containers current state by containerId
@@ -62,11 +58,6 @@ import java.lang.invoke.StringConcatFactory
         }
     }
 
-    // deep state inspection
-    fun inspectContainer(containerName:String): DockerExecutionResult {
-        return executor.executeCommand("inspect", containerName)
-    }
-
     // list all containers with basic stats
     fun listContainers(): DockerExecutionResult {
         return executor.executeCommand(
@@ -76,5 +67,4 @@ import java.lang.invoke.StringConcatFactory
             "{{.Names}}|{{.Status}}|{{.Image}}|{{.State}}"
         )
     }
-
- }
+}

@@ -19,7 +19,7 @@ class DashboardViewModel(
     var uiState by mutableStateOf(DashboardUiState())
         private set
 
-    private val viewModelScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val viewModelScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var logPollingJob: Job? = null
 
     init {
@@ -43,7 +43,7 @@ class DashboardViewModel(
         logPollingJob = viewModelScope.launch {
             while (true) {
                 fetchLogs(containerId)
-                delay(300L.milliseconds) // Poll fresh logs every 3 seconds
+                delay(300L.milliseconds)
             }
         }
     }

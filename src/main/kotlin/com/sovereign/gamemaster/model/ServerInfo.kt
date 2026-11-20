@@ -15,12 +15,12 @@ enum class ContainerState(
 }
 
 data class ServerSummary(
-    val id: String = "ID STRING",
-    val name: String = "NAME STRING",
-    val gamePreset: String = "SPECIFIC GAME PRESET",
-    val artworkKey: String = "ARTWORK KEY", // Maps to a local resource
+    val id: String = "",
+    val name: String = "",
+    val gamePreset: String = "",
+    val artworkKey: String = "",
     val status: ContainerState = ContainerState.UNKNOWN,
-    val cpuUsage: String = "CPU UTIL",
-    val memoryUsage: String = "RAM UTIL",
-    val playerCount: String = "PLAYERCOUNT"
+    val cpuUsage: String = "",
+    val memoryUsage: String = "",
+    val playerCount: String = ""
 )

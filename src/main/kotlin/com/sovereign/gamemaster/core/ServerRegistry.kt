@@ -6,12 +6,13 @@ import com.sovereign.gamemaster.model.ServerSummary
 import com.sovereign.gamemaster.orchestration.DockerMonitorManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import java.time.LocalTime
 import kotlin.time.Duration.Companion.milliseconds
 
 class ServerRegistry(
     private val monitorManager: DockerMonitorManager
 ) {
-    private val registryScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val registryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private val _servers = MutableStateFlow<List<ServerSummary>>(emptyList())
     val servers: StateFlow<List<ServerSummary>> = _servers.asStateFlow()
@@ -36,14 +37,14 @@ class ServerRegistry(
     private fun startGlobalPolling() {
         registryScope.launch {
             while (true) {
-                delay(3000.milliseconds)
+                delay(3000L.milliseconds)
                 refreshServers()
             }
         }
     }
 
     fun refreshServers() {
-        val timestamp = java.time.LocalTime.now()
+        val timestamp = LocalTime.now()
         val result = monitorManager.listContainers()
 
         if (result.code != 0) {
@@ -101,7 +102,6 @@ class ServerRegistry(
     }
 }
 
-// summary helper function
 fun ServerSummary.toRuntimeModel(currentState: ContainerState, isBusy: Boolean = false): ServerRuntimeUiModel {
     return ServerRuntimeUiModel(
         id = this.id,

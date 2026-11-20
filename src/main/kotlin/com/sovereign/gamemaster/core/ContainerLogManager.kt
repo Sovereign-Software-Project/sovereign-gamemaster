@@ -2,12 +2,13 @@ package com.sovereign.gamemaster.core
 
 import com.sovereign.gamemaster.orchestration.DockerMonitorManager
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 
 class ContainerLogManager (
     private val monitorManager: DockerMonitorManager
 ) {
     // store timestamp of last clear action per container id
-    private val clearTimestamps = mutableMapOf<String, String>()
+    private val clearTimestamps = ConcurrentHashMap<String, String>()
 
     private val noisePatterns = listOf(
         "supervisord",

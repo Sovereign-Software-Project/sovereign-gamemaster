@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
+import com.sovereign.gamemaster.core.ContainerLogManager
 import com.sovereign.gamemaster.core.ServerRegistry
+import com.sovereign.gamemaster.orchestration.DockerContainerManager
 import com.sovereign.gamemaster.orchestration.DockerMonitorManager
 import com.sovereign.gamemaster.orchestration.DockerProcessExecutor
 import com.sovereign.gamemaster.ui.screens.dashboard.DashboardScreen
-import com.sovereign.gamemaster.orchestration.DockerContainerManager
-import com.sovereign.gamemaster.core.ContainerLogManager
 import com.sovereign.gamemaster.viewmodel.DashboardViewModel
 
 @Composable
